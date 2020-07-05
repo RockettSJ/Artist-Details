@@ -1,8 +1,8 @@
 import React from "react";
 import ArtistCard from "./components/ArtistCard";
 import ArtistPopularTrack from "./components/ArtistPopularTracks";
-import "./App.css";
 import ArtistVideo from "./components/ArtistVideo";
+import "./App.css";
 
 class App extends React.Component {
   constructor(props) {
@@ -91,7 +91,8 @@ class App extends React.Component {
     );
 
     return (
-      <div className="App">
+      <div className="App bg-dark text-light min-vh-100">
+        <header></header>
         <form onSubmit={this.handleSubmit}>
           <label>
             <input
