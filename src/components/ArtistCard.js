@@ -7,13 +7,13 @@ const ArtistCard = (props) => {
       <h2>{props.artistName}</h2>
       <h4>{props.genre}</h4>
       <h4>{props.yearFormed}</h4>
-      <a rel="noreferrer noopener" href={props.website}>
+      <a rel="noreferrer noopener" target="_blank" href={props.website}>
         Website
       </a>
-      <a rel="noreferrer noopener" href={props.facebook}>
+      <a rel="noreferrer noopener" target="_blank" href={props.facebook}>
         Facebook
       </a>
-      <a rel="noreferrer noopener" href={props.twitter}>
+      <a rel="noreferrer noopener" target="_blank" href={props.twitter}>
         Twitter
       </a>
       <section>{props.bio}</section>

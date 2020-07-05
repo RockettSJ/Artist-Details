@@ -1,12 +1,16 @@
 import React from "react";
 import ArtistCard from "./components/ArtistCard";
+import ArtistPopularTrack from "./components/ArtistPopularTracks";
 import "./App.css";
+import ArtistVideo from "./components/ArtistVideo";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value: "",
+      artistPopularTracks: [],
+      artistVideosCollection: [],
       renderComponent: false,
     };
 
@@ -58,6 +62,8 @@ class App extends React.Component {
         facebook: artistData.artists[0].strFacebook,
         twitter: artistData.artists[0].strTwitter,
         bio: artistData.artists[0].strBiographyEN,
+        artistPopularTracks: popularTrackData.track,
+        artistVideosCollection: artistVideosData.mvids,
       });
     } else {
       this.setState({ renderComponent: false });
@@ -65,6 +71,25 @@ class App extends React.Component {
   };
 
   render() {
+    const artistPopularTrackList = this.state.artistPopularTracks.map(
+      (track) => {
+        return (
+          <ArtistPopularTrack
+            key={track.idTrack}
+            trackName={track.strTrack}
+            trackVideoLink={track.strMusicVid}
+          />
+        );
+      }
+    );
+
+    //Key prop in here could be the same as the above. Not sure if safe.
+    const artistVideosCollection = this.state.artistVideosCollection.map(
+      (video) => {
+        return <ArtistVideo key={video.idTrack} videoTrack={video.strTrack} />;
+      }
+    );
+
     return (
       <div className="App">
         <form onSubmit={this.handleSubmit}>
@@ -90,6 +115,8 @@ class App extends React.Component {
               twitter={this.state.twitter}
               bio={this.state.bio}
             />
+            <ul>{artistPopularTrackList}</ul>
+            <ul>{artistVideosCollection}</ul>
           </div>
         ) : (
           <h1>hi lol</h1>
