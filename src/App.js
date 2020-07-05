@@ -92,36 +92,54 @@ class App extends React.Component {
 
     return (
       <div className="App bg-dark text-light min-vh-100">
-        <header></header>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            <input
-              type="text"
-              placeholder="Artist"
-              value={this.state.value}
-              onChange={this.handleChange}
-            />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
-        {this.state.renderComponent ? (
-          <div>
-            <ArtistCard
-              bannerURL={this.state.bannerURL}
-              artistName={this.state.name}
-              genre={this.state.genre}
-              yearFormed={this.state.yearFormed}
-              website={this.state.website}
-              facebook={this.state.facebook}
-              twitter={this.state.twitter}
-              bio={this.state.bio}
-            />
-            <ul>{artistPopularTrackList}</ul>
-            <ul>{artistVideosCollection}</ul>
+        <header className="site-header">
+          <div className="container text-center">
+            <h1 className="text-uppercase py-4">Artist Pages</h1>
           </div>
-        ) : (
-          <h1>hi lol</h1>
-        )}
+          <form onSubmit={this.handleSubmit}>
+            <div className="input-group">
+              <input
+                className="form-control"
+                aria-label="Search for an Artist"
+                type="text"
+                placeholder="Search for an artist or band"
+                value={this.state.value}
+                onChange={this.handleChange}
+              />
+              <button
+                className="btn btn-outline-success btn-dark text-light"
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </header>
+        <main className="container mt-3">
+          {this.state.renderComponent ? (
+            <div>
+              <ArtistCard
+                bannerURL={this.state.bannerURL}
+                artistName={this.state.name}
+                genre={this.state.genre}
+                yearFormed={this.state.yearFormed}
+                website={this.state.website}
+                facebook={this.state.facebook}
+                twitter={this.state.twitter}
+                bio={this.state.bio}
+              />
+              <ul>{artistPopularTrackList}</ul>
+              <ul>{artistVideosCollection}</ul>
+            </div>
+          ) : (
+            <section>
+              <p className="text-center">
+                Search for an artist to view their details, biography, popular
+                tracks and videos!
+              </p>
+            </section>
+          )}
+        </main>
       </div>
     );
   }
