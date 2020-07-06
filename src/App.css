@@ -1,5 +1,7 @@
 .App {
     background-color: #2d3436;
+    /* This white space assignment fixes the lack of new lines returned from json data */
+    white-space: pre-wrap;
 }
 
 .site-header,
@@ -13,3 +15,4 @@
 .video-card {
     max-width: 18rem;
 }
+
