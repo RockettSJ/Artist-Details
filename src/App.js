@@ -54,12 +54,6 @@ class App extends React.Component {
 
     //Todo: Will need better handling than this
     if (artistData.artists.length === 1) {
-      //need to make new lines from JSON data. not working...
-      const formattedBio = artistData.artists[0].strBiographyEN.replace(
-        /\\n/g,
-        "\n"
-      );
-
       this.setState({
         renderComponent: true,
         bannerURL: artistData.artists[0].strArtistBanner,
@@ -69,7 +63,7 @@ class App extends React.Component {
         website: artistData.artists[0].strWebsite,
         facebook: artistData.artists[0].strFacebook,
         twitter: artistData.artists[0].strTwitter,
-        bio: formattedBio,
+        bio: artistData.artists[0].strBiographyEN,
         artistPopularTracks: popularTrackData.track,
         artistVideosCollection: artistVideosLimited,
       });
