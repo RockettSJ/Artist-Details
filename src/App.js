@@ -43,15 +43,26 @@ class App extends React.Component {
     console.log(popularTrackData);
 
     //Will use this ID for other stuff including fetching the artist's youtube videos
-    //Todo: Will need to filter the number of objects returned, somehow
     const artistID = artistData.artists[0].idArtist;
     const fetchArtistVideos = api1 + apiKey + api_ytVideos + artistID;
     const artistVideosResponse = await fetch(fetchArtistVideos);
     const artistVideosData = await artistVideosResponse.json();
+
+    //Return a maximum of 20 videos
+    const artistVideosLimited = artistVideosData.mvids.slice(0, 20);
     console.log(artistVideosData);
 
     //Todo: Will need better handling than this
     if (artistData.artists.length === 1) {
+      //Need to format JSON line breaks. Not working...
+
+      // const formattedBio = artistData.artists[0].strBiographyEN.replace(
+      //   /\\n/g,
+      //   ""
+      // );
+
+      // const formattedBio = artistData.artists[0].strBiographyEN.toString();
+
       this.setState({
         renderComponent: true,
         bannerURL: artistData.artists[0].strArtistBanner,
@@ -63,7 +74,7 @@ class App extends React.Component {
         twitter: artistData.artists[0].strTwitter,
         bio: artistData.artists[0].strBiographyEN,
         artistPopularTracks: popularTrackData.track,
-        artistVideosCollection: artistVideosData.mvids,
+        artistVideosCollection: artistVideosLimited,
       });
     } else {
       this.setState({ renderComponent: false });
@@ -77,6 +88,7 @@ class App extends React.Component {
           <ArtistPopularTrack
             key={track.idTrack}
             trackName={track.strTrack}
+            albumName={track.strAlbum}
             trackVideoLink={track.strMusicVid}
           />
         );
@@ -86,17 +98,25 @@ class App extends React.Component {
     //Key prop in here could be the same as the above. Not sure if safe.
     const artistVideosCollection = this.state.artistVideosCollection.map(
       (video) => {
-        return <ArtistVideo key={video.idTrack} videoTrack={video.strTrack} />;
+        return (
+          <ArtistVideo
+            key={video.idTrack}
+            thumbImg={video.strTrackThumb}
+            videoTrack={video.strTrack}
+          />
+        );
       }
     );
 
     return (
-      <div className="App bg-dark text-light min-vh-100">
+      <div className="App text-light min-vh-100">
         <header className="site-header">
           <div className="container text-center">
             <h1 className="text-uppercase py-4">Artist Pages</h1>
           </div>
-          <form onSubmit={this.handleSubmit}>
+        </header>
+        <main className="container mt-3">
+          <form className="mb-3" onSubmit={this.handleSubmit}>
             <div className="input-group">
               <input
                 className="form-control"
@@ -114,8 +134,6 @@ class App extends React.Component {
               </button>
             </div>
           </form>
-        </header>
-        <main className="container mt-3">
           {this.state.renderComponent ? (
             <div>
               <ArtistCard
@@ -128,8 +146,35 @@ class App extends React.Component {
                 twitter={this.state.twitter}
                 bio={this.state.bio}
               />
-              <ul>{artistPopularTrackList}</ul>
-              <ul>{artistVideosCollection}</ul>
+              <ul className="list-group">
+                <div className="title-header">
+                  <h3 className="py-2 pl-2 text-uppercase">
+                    Their popular tracks
+                  </h3>
+                </div>
+                <div className="container">
+                  <div className="row py-2">
+                    <div className="col text-left">
+                      <h4>Track</h4>
+                    </div>
+                    <div className="col text-center">
+                      <h4>Album</h4>
+                    </div>
+                    <div className="col text-right">
+                      <h4>Watch on YouTube</h4>
+                    </div>
+                  </div>
+                </div>
+                {artistPopularTrackList}
+              </ul>
+              <div>
+                <div className="title-header">
+                  <h3 className="py-2 pl-2 text-uppercase">
+                    More of their videos
+                  </h3>
+                </div>
+                {artistVideosCollection}
+              </div>
             </div>
           ) : (
             <section>

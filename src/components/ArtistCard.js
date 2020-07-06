@@ -2,7 +2,7 @@ import React from "react";
 
 const ArtistCard = (props) => {
   return (
-    <div className="artist-container card bg-dark">
+    <div className="card bg-dark">
       <img className="card-img-top" src={props.bannerURL} alt="artist banner" />
       <div className="card-body">
         <div className="row text-center">
