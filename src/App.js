@@ -103,6 +103,7 @@ class App extends React.Component {
             key={video.idTrack}
             thumbImg={video.strTrackThumb}
             videoTrack={video.strTrack}
+            videoLink={video.strMusicVid}
           />
         );
       }
@@ -173,7 +174,9 @@ class App extends React.Component {
                     More of their videos
                   </h3>
                 </div>
-                {artistVideosCollection}
+                <div className="row justify-content-center">
+                  {artistVideosCollection}
+                </div>
               </div>
             </div>
           ) : (
