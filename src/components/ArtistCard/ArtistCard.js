@@ -1,5 +1,9 @@
 import React from "react";
 import ReactModal from "react-modal";
+import "./ArtistCard.css";
+
+//Required for screenreaders
+ReactModal.setAppElement("#root");
 
 class ArtistCard extends React.Component {
   constructor(props) {
@@ -22,18 +26,6 @@ class ArtistCard extends React.Component {
   render() {
     return (
       <div className="card bg-dark">
-        <button onClick={this.handleOpenModal}>Trigger Modal</button>
-        <ReactModal
-          isOpen={this.state.showModal}
-          contentLabel="Minimal Modal Example"
-        >
-          <button onClick={this.handleCloseModal}>Close Modal</button>
-          <div className="container">
-            <article className="card-text text-justify">
-              {this.props.bio}
-            </article>
-          </div>
-        </ReactModal>
         <img
           className="card-img-top"
           src={this.props.bannerURL}
@@ -70,11 +62,35 @@ class ArtistCard extends React.Component {
             >
               Twitter
             </a>
+          </div>
+        </div>
+        <button
+          className="btn btn-dark btn-outline-success text-light"
+          onClick={this.handleOpenModal}
+        >
+          <h5 className="text-uppercase py-2">View Biography</h5>
+        </button>
+        <ReactModal
+          closeTimeoutMS={1000}
+          isOpen={this.state.showModal}
+          contentLabel="Artist's Biography Modal"
+          onRequestClose={this.handleCloseModal}
+          shouldCloseOnOverlayClick={true}
+        >
+          <div className="row justify-content-center">
+            <button className="btn btn-dark" onClick={this.handleCloseModal}>
+              Close Modal
+            </button>
+          </div>
+          <div className="container">
+            <h4 className="text-uppercase text-center py-3">
+              {this.props.artistName} Biography
+            </h4>
             <article className="card-text text-justify">
               {this.props.bio}
             </article>
           </div>
-        </div>
+        </ReactModal>
       </div>
     );
   }

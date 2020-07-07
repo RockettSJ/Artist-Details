@@ -1,5 +1,5 @@
 import React from "react";
-import ArtistCard from "./components/ArtistCard";
+import ArtistCard from "./components/ArtistCard/ArtistCard";
 import ArtistPopularTrack from "./components/ArtistPopularTracks";
 import ArtistVideo from "./components/ArtistVideo";
 import "./App.css";
@@ -108,7 +108,7 @@ class App extends React.Component {
           </div>
         </header>
         <main className="container mt-3">
-          <form className="mb-3" onSubmit={this.handleSubmit}>
+          <form onSubmit={this.handleSubmit}>
             <div className="input-group">
               <input
                 className="form-control"
@@ -127,7 +127,7 @@ class App extends React.Component {
             </div>
           </form>
           {this.state.renderComponent ? (
-            <div>
+            <div className="mt-3">
               <ArtistCard
                 bannerURL={this.state.bannerURL}
                 artistName={this.state.name}
@@ -138,7 +138,7 @@ class App extends React.Component {
                 twitter={this.state.twitter}
                 bio={this.state.bio}
               />
-              <ul className="list-group">
+              <ul className="list-group mt-5">
                 <div className="title-header">
                   <h3 className="py-2 pl-2 text-uppercase">
                     Their popular tracks
@@ -159,7 +159,7 @@ class App extends React.Component {
                 </div>
                 {artistPopularTrackList}
               </ul>
-              <div>
+              <div className="mt-5">
                 <div className="title-header">
                   <h3 className="py-2 pl-2 text-uppercase">
                     More of their videos

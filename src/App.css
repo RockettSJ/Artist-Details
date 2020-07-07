@@ -1,7 +1,5 @@
 .App {
     background-color: #2d3436;
-    /* This white space assignment fixes the lack of new lines returned from json data */
-    white-space: pre-wrap;
 }
 
 .site-header,
@@ -16,16 +14,4 @@
     max-width: 18rem;
 }
 
-.ReactModal__Overlay {
-    opacity: 0;
-    transition: opacity 1000ms ease-in-out;
-}
-
-.ReactModal__Overlay--after-open{
-    opacity: 1;
-}
-
-.ReactModal__Overlay--before-close{
-    opacity: 0;
-}
 
