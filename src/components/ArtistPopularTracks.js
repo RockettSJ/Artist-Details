@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 
 const ArtistPopularTrack = (props) => {
   return (
@@ -8,11 +10,12 @@ const ArtistPopularTrack = (props) => {
         <div className="col text-center">{props.albumName}</div>
         <div className="col text-right">
           <a
+            className="youtube-icon"
             rel="noreferrer noopener"
             target="_blank"
             href={props.trackVideoLink}
           >
-            Watch on YouTube
+            <FontAwesomeIcon icon={faYoutube} size="lg" />
           </a>
         </div>
       </div>

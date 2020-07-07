@@ -1,5 +1,11 @@
 import React from "react";
 import ReactModal from "react-modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faInternetExplorer,
+  faFacebookF,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 import "./ArtistCard.css";
 
 //Required for screenreaders
@@ -40,29 +46,43 @@ class ArtistCard extends React.Component {
               <p className="text-right">{this.props.yearFormed}</p>
             </div>
           </div>
-          <div>
-            <a
-              rel="noreferrer noopener"
-              target="_blank"
-              href={this.props.website}
-            >
-              Website
-            </a>
-            <a
-              rel="noreferrer noopener"
-              target="_blank"
-              href={this.props.facebook}
-            >
-              Facebook
-            </a>
-            <a
-              rel="noreferrer noopener"
-              target="_blank"
-              href={this.props.twitter}
-            >
-              Twitter
-            </a>
+          <div className="row">
+            <div className="col text-center">
+              <ul className="list-inline">
+                <li className="list-inline-item px-2">
+                  <a
+                    className="text-light"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                    href={this.props.website}
+                  >
+                    <FontAwesomeIcon icon={faInternetExplorer} />
+                  </a>
+                </li>
+                <li className="list-inline-item px-2">
+                  <a
+                    className="text-light"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                    href={this.props.facebook}
+                  >
+                    <FontAwesomeIcon icon={faFacebookF} />
+                  </a>
+                </li>
+                <li className="list-inline-item px-2">
+                  <a
+                    className="text-light"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                    href={this.props.twitter}
+                  >
+                    <FontAwesomeIcon icon={faTwitter} />
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
+          <div></div>
         </div>
         <button
           className="btn btn-dark btn-outline-success text-light"

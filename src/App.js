@@ -54,15 +54,19 @@ class App extends React.Component {
 
     //Todo: Will need better handling than this
     if (artistData.artists.length === 1) {
+      const artistWebsite = "https://" + artistData.artists[0].strWebsite;
+      const artistFb = "https://" + artistData.artists[0].strFacebook;
+      const artistTwitter = "https://" + artistData.artists[0].strTwitter;
+
       this.setState({
         renderComponent: true,
         bannerURL: artistData.artists[0].strArtistBanner,
         name: artistData.artists[0].strArtist,
         genre: artistData.artists[0].strGenre,
         yearFormed: artistData.artists[0].intFormedYear,
-        website: artistData.artists[0].strWebsite,
-        facebook: artistData.artists[0].strFacebook,
-        twitter: artistData.artists[0].strTwitter,
+        website: artistWebsite,
+        facebook: artistFb,
+        twitter: artistTwitter,
         bio: artistData.artists[0].strBiographyEN,
         artistPopularTracks: popularTrackData.track,
         artistVideosCollection: artistVideosLimited,
@@ -145,7 +149,7 @@ class App extends React.Component {
                   </h3>
                 </div>
                 <div className="container">
-                  <div className="row py-2">
+                  <div className="row bg-dark py-2">
                     <div className="col text-left">
                       <h4>Track</h4>
                     </div>
@@ -153,7 +157,7 @@ class App extends React.Component {
                       <h4>Album</h4>
                     </div>
                     <div className="col text-right">
-                      <h4>Watch on YouTube</h4>
+                      <h4>Video</h4>
                     </div>
                   </div>
                 </div>

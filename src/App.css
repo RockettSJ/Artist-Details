@@ -14,4 +14,12 @@
     max-width: 18rem;
 }
 
+.youtube-icon {
+    color: #FF3333;
+}
+
+.youtube-icon:hover {
+    color: #c0392b;
+}
+
 
