@@ -32,7 +32,7 @@ class ArtistCard extends React.Component {
 
   render() {
     return (
-      <div className="card bg-dark">
+      <div className="card artist-card bg-dark">
         <img
           className="card-img-top"
           src={this.props.bannerURL}

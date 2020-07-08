@@ -1,7 +1,7 @@
 import React from "react";
 import ArtistCard from "./components/ArtistCard/ArtistCard";
-import ArtistPopularTrack from "./components/ArtistPopularTracks";
-import ArtistVideo from "./components/ArtistVideo";
+import ArtistPopularTrack from "./components/PopularTracks/ArtistPopularTracks";
+import ArtistVideo from "./components/ArtistVideo/ArtistVideo";
 import "./App.css";
 
 class App extends React.Component {
@@ -76,7 +76,6 @@ class App extends React.Component {
       const artistTwitter = "https://" + artistData.artists[0].strTwitter;
 
       this.setState({
-        renderComponent: true,
         bannerURL: artistData.artists[0].strArtistBanner,
         name: artistData.artists[0].strArtist,
         genre: artistData.artists[0].strGenre,
@@ -88,6 +87,7 @@ class App extends React.Component {
         bio: artistData.artists[0].strBiographyEN,
         artistPopularTracks: popularTrackData.track,
         artistVideosCollection: artistVideosLimited,
+        renderComponent: true,
       });
     } else {
       this.setState({ renderComponent: false });
@@ -150,7 +150,7 @@ class App extends React.Component {
           </form>
           {this.state.renderComponent ? (
             <div className="row mt-3">
-              <div className="col-lg-6 col-md-12 ">
+              <div className="col-lg-6 col-md-12 mb-md-3">
                 <ArtistCard
                   bannerURL={this.state.bannerURL}
                   artistName={this.state.name}
@@ -163,7 +163,7 @@ class App extends React.Component {
                   bioExcerpt={this.state.bioExcerpt}
                 />
               </div>
-              <div className="col-lg-6 col-md-12">
+              <div className="col-lg-6 col-md-12 popularTracks">
                 <ul className="list-group">
                   <div className="title-header">
                     <h3 className="py-2 pl-2 text-uppercase">
@@ -187,7 +187,7 @@ class App extends React.Component {
                 </ul>
               </div>
 
-              <div className="mt-5">
+              <div className="videos mt-5">
                 <div className="title-header">
                   <h3 className="py-2 pl-2 text-uppercase">
                     More of their videos
