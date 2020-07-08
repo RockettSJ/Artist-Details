@@ -13,11 +13,13 @@ class App extends React.Component {
       artistVideosCollection: [],
       renderComponent: false,
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange = (event) => {
+  handleChange(event) {
     this.setState({ value: event.target.value });
-  };
+  }
 
   bio_truncate(string, length, ending) {
     if (length == null) {
@@ -49,7 +51,22 @@ class App extends React.Component {
     const artistData = await response.json();
     console.log(artistData);
 
-    //Todo: May need better handling than this
+    //Todo: Make a new component to map the array and display this data
+    const popularTrackResponse = await fetch(fetchArtistPopularTracks);
+    const popularTrackData = await popularTrackResponse.json();
+    console.log(popularTrackData);
+
+    //Will use this ID for other stuff including fetching the artist's youtube videos
+    const artistID = artistData.artists[0].idArtist;
+    const fetchArtistVideos = api1 + apiKey + api_ytVideos + artistID;
+    const artistVideosResponse = await fetch(fetchArtistVideos);
+    const artistVideosData = await artistVideosResponse.json();
+
+    //Return a maximum of 20 videos
+    const artistVideosLimited = artistVideosData.mvids.slice(0, 20);
+    console.log(artistVideosData);
+
+    //Todo: Will need better handling than this
     if (artistData.artists.length) {
       const bioExcerpt = this.bio_truncate(
         artistData.artists[0].strBiographyEN
@@ -68,36 +85,12 @@ class App extends React.Component {
         twitter: artistTwitter,
         bioExcerpt: bioExcerpt,
         bio: artistData.artists[0].strBiographyEN,
+        artistPopularTracks: popularTrackData.track,
+        artistVideosCollection: artistVideosLimited,
         renderComponent: true,
       });
     } else {
       this.setState({ renderComponent: false });
-    }
-
-    const popularTrackResponse = await fetch(fetchArtistPopularTracks);
-    const popularTrackData = await popularTrackResponse.json();
-    console.log(popularTrackData);
-
-    if (popularTrackData.length) {
-      this.setState({
-        artistPopularTracks: popularTrackData.track,
-      });
-    }
-
-    //Will use this ID for other stuff including fetching the artist's youtube videos
-    const artistID = artistData.artists[0].idArtist;
-    const fetchArtistVideos = api1 + apiKey + api_ytVideos + artistID;
-    const artistVideosResponse = await fetch(fetchArtistVideos);
-    const artistVideosData = await artistVideosResponse.json();
-
-    if (artistVideosData.length) {
-      //Return a maximum of 20 videos
-      const artistVideosLimited = artistVideosData.mvids.slice(0, 20);
-      console.log(artistVideosData);
-
-      this.setState({
-        artistVideosCollection: artistVideosLimited,
-      });
     }
   };
 
