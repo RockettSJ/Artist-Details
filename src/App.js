@@ -200,15 +200,18 @@ class App extends React.Component {
             </div>
           ) : (
             <div className="text-center">
-              <p className="my-5">
+              <p className="my-5 instruction-text">
                 Search for an artist to view their details, biography, popular
                 tracks and videos!
               </p>
-              <h4 className="text-uppercase">Please be aware:</h4>
-              <p>
-                Some video thumbnail images or track links may be broken, as
-                this app utilizes the AudioDB API and some data may be missing.
-              </p>
+              <div className="warning-text">
+                <h4 className="text-uppercase">Please be aware:</h4>
+                <p>
+                  Some artists are missing from the database as this app
+                  utilizes an external API. Please consider searching for
+                  another artist if the app throws an error.
+                </p>
+              </div>
             </div>
           )}
         </main>

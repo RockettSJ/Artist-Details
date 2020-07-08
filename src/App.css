@@ -10,6 +10,15 @@
     background: linear-gradient(to right, #a8e063, #56ab2f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+@keyframes slideInFromLeft {
+     0% {
+         transform: translateX(-100%);
+     }
+     100% {
+         transform: translateX(0);
+     }
+ }
+
 @keyframes slideInFromRight{
     0% {
         transform: translateX(100%);
@@ -26,6 +35,13 @@
     100% {
         transform: translateY(0);
     }
+}
+
+.instruction-text,
+.warning-text {
+    animation: 1s ease-in-out 0s 1 slideInFromLeft;
+}{
+    animation: 1s ease-in-out 0s 1 slideInFromLeft;
 }
 
 .videos {
