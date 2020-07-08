@@ -1,4 +1,5 @@
-article {
+article,
+.bio-excerpt {
     /* This white space assignment fixes the lack of new lines returned from json data */
     white-space: pre-wrap;
     line-height: 1.8rem;
@@ -16,5 +17,4 @@ article {
 .ReactModal__Overlay--before-close{
     opacity: 0;
 }
-
 

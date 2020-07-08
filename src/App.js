@@ -21,6 +21,20 @@ class App extends React.Component {
     this.setState({ value: event.target.value });
   }
 
+  bio_truncate(string, length, ending) {
+    if (length == null) {
+      length = 700;
+    }
+    if (ending == null) {
+      ending = "...";
+    }
+    if (string.length > length) {
+      return string.substring(0, length - ending.length) + ending;
+    } else {
+      return string;
+    }
+  }
+
   handleSubmit = async (event) => {
     event.preventDefault();
     const artist = this.state.value;
@@ -54,6 +68,9 @@ class App extends React.Component {
 
     //Todo: Will need better handling than this
     if (artistData.artists.length === 1) {
+      const bioExcerpt = this.bio_truncate(
+        artistData.artists[0].strBiographyEN
+      );
       const artistWebsite = "https://" + artistData.artists[0].strWebsite;
       const artistFb = "https://" + artistData.artists[0].strFacebook;
       const artistTwitter = "https://" + artistData.artists[0].strTwitter;
@@ -67,6 +84,7 @@ class App extends React.Component {
         website: artistWebsite,
         facebook: artistFb,
         twitter: artistTwitter,
+        bioExcerpt: bioExcerpt,
         bio: artistData.artists[0].strBiographyEN,
         artistPopularTracks: popularTrackData.track,
         artistVideosCollection: artistVideosLimited,
@@ -131,38 +149,44 @@ class App extends React.Component {
             </div>
           </form>
           {this.state.renderComponent ? (
-            <div className="mt-3">
-              <ArtistCard
-                bannerURL={this.state.bannerURL}
-                artistName={this.state.name}
-                genre={this.state.genre}
-                yearFormed={this.state.yearFormed}
-                website={this.state.website}
-                facebook={this.state.facebook}
-                twitter={this.state.twitter}
-                bio={this.state.bio}
-              />
-              <ul className="list-group mt-5">
-                <div className="title-header">
-                  <h3 className="py-2 pl-2 text-uppercase">
-                    Their popular tracks
-                  </h3>
-                </div>
-                <div className="container">
-                  <div className="row bg-dark py-2">
-                    <div className="col text-left">
-                      <h4>Track</h4>
-                    </div>
-                    <div className="col text-center">
-                      <h4>Album</h4>
-                    </div>
-                    <div className="col text-right">
-                      <h4>Video</h4>
+            <div className="row mt-3">
+              <div className="col-lg-6 col-md-12 ">
+                <ArtistCard
+                  bannerURL={this.state.bannerURL}
+                  artistName={this.state.name}
+                  genre={this.state.genre}
+                  yearFormed={this.state.yearFormed}
+                  website={this.state.website}
+                  facebook={this.state.facebook}
+                  twitter={this.state.twitter}
+                  bio={this.state.bio}
+                  bioExcerpt={this.state.bioExcerpt}
+                />
+              </div>
+              <div className="col-lg-6 col-md-12">
+                <ul className="list-group">
+                  <div className="title-header">
+                    <h3 className="py-2 pl-2 text-uppercase">
+                      Their popular tracks
+                    </h3>
+                  </div>
+                  <div className="container">
+                    <div className="row bg-dark py-2">
+                      <div className="col text-left">
+                        <h4>Track</h4>
+                      </div>
+                      <div className="col text-center">
+                        <h4>Album</h4>
+                      </div>
+                      <div className="col text-right">
+                        <h4>Video</h4>
+                      </div>
                     </div>
                   </div>
-                </div>
-                {artistPopularTrackList}
-              </ul>
+                  {artistPopularTrackList}
+                </ul>
+              </div>
+
               <div className="mt-5">
                 <div className="title-header">
                   <h3 className="py-2 pl-2 text-uppercase">
@@ -175,12 +199,17 @@ class App extends React.Component {
               </div>
             </div>
           ) : (
-            <section>
-              <p className="text-center">
+            <div className="text-center">
+              <p className="my-5">
                 Search for an artist to view their details, biography, popular
                 tracks and videos!
               </p>
-            </section>
+              <h4 className="text-uppercase">Please be aware:</h4>
+              <p>
+                Some video thumbnail images or track links may be broken, as
+                this app utilizes the AudioDB API and some data may be missing.
+              </p>
+            </div>
           )}
         </main>
       </div>
