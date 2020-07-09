@@ -13,14 +13,13 @@ class App extends React.Component {
       artistVideosCollection: [],
       renderComponent: false,
     };
-
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({ value: event.target.value });
-  }
+  };
 
+  //This function will be used to trim an artist's biography and return an excerpt, significantly reducing the amount of text on the artist card component.
   bio_truncate(string, length, ending) {
     if (length == null) {
       length = 700;
@@ -37,6 +36,7 @@ class App extends React.Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
+    //Initialize API call endpoints
     const artist = this.state.value;
     const api1 = "https://www.theaudiodb.com/api/v1/json/";
     const apiKey = process.env.REACT_APP_MY_API_KEY;
@@ -47,30 +47,16 @@ class App extends React.Component {
     const fetchArtist = api1 + apiKey + api2 + artist;
     const fetchArtistPopularTracks = api1 + apiKey + api_popularTracks + artist;
 
+    //Call the primary API endpoint
     const response = await fetch(fetchArtist);
     const artistData = await response.json();
-    console.log(artistData);
 
-    //Todo: Make a new component to map the array and display this data
-    const popularTrackResponse = await fetch(fetchArtistPopularTracks);
-    const popularTrackData = await popularTrackResponse.json();
-    console.log(popularTrackData);
-
-    //Will use this ID for other stuff including fetching the artist's youtube videos
-    const artistID = artistData.artists[0].idArtist;
-    const fetchArtistVideos = api1 + apiKey + api_ytVideos + artistID;
-    const artistVideosResponse = await fetch(fetchArtistVideos);
-    const artistVideosData = await artistVideosResponse.json();
-
-    //Return a maximum of 20 videos
-    const artistVideosLimited = artistVideosData.mvids.slice(0, 20);
-    console.log(artistVideosData);
-
-    //Todo: Will need better handling than this
-    if (artistData.artists.length) {
+    // If the artist is found upon submission, start the procedure of fetching all data from each API call
+    if (artistData.artists) {
       const bioExcerpt = this.bio_truncate(
         artistData.artists[0].strBiographyEN
       );
+
       const artistWebsite = "https://" + artistData.artists[0].strWebsite;
       const artistFb = "https://" + artistData.artists[0].strFacebook;
       const artistTwitter = "https://" + artistData.artists[0].strTwitter;
@@ -85,42 +71,68 @@ class App extends React.Component {
         twitter: artistTwitter,
         bioExcerpt: bioExcerpt,
         bio: artistData.artists[0].strBiographyEN,
-        artistPopularTracks: popularTrackData.track,
-        artistVideosCollection: artistVideosLimited,
         renderComponent: true,
       });
+
+      //Setup call to fetch the artist's popular tracks
+      const popularTrackResponse = await fetch(fetchArtistPopularTracks);
+      const popularTrackData = await popularTrackResponse.json();
+      if (popularTrackData) {
+        this.setState({
+          artistPopularTracks: popularTrackData.track,
+        });
+      }
+
+      //Setup call to fetch the artist's videos
+      const artistID = artistData.artists[0].idArtist;
+      const fetchArtistVideos = api1 + apiKey + api_ytVideos + artistID;
+      const artistVideosResponse = await fetch(fetchArtistVideos);
+      const artistVideosData = await artistVideosResponse.json();
+
+      //If video data exists, return a maximum of 20 videos and add the data to the state's video array
+      if (artistVideosData.mvids) {
+        //Using var so it can be accessed from outside this scope
+        var artistVideosLimited = artistVideosData.mvids.slice(0, 20);
+        this.setState({ artistVideosCollection: artistVideosLimited });
+      } else {
+        artistVideosLimited = null;
+      }
     } else {
-      this.setState({ renderComponent: false });
+      alert("There was an error with your form input. Please try again.");
     }
   };
 
   render() {
-    const artistPopularTrackList = this.state.artistPopularTracks.map(
-      (track) => {
-        return (
-          <ArtistPopularTrack
-            key={track.idTrack}
-            trackName={track.strTrack}
-            albumName={track.strAlbum}
-            trackVideoLink={track.strMusicVid}
-          />
-        );
-      }
-    );
+    if (this.state.artistPopularTracks) {
+      var artistPopularTrackList = this.state.artistPopularTracks.map(
+        (track) => {
+          return (
+            <ArtistPopularTrack
+              key={track.idTrack}
+              trackName={track.strTrack}
+              albumName={track.strAlbum}
+              trackVideoLink={track.strMusicVid}
+            />
+          );
+        }
+      );
+    }
 
     //Key prop in here could be the same as the above. Not sure if safe.
-    const artistVideosCollection = this.state.artistVideosCollection.map(
-      (video) => {
-        return (
-          <ArtistVideo
-            key={video.idTrack}
-            thumbImg={video.strTrackThumb}
-            videoTrack={video.strTrack}
-            videoLink={video.strMusicVid}
-          />
-        );
-      }
-    );
+    if (this.state.artistVideosCollection) {
+      var artistVideosCollection = this.state.artistVideosCollection.map(
+        (video) => {
+          return (
+            <ArtistVideo
+              key={video.idTrack}
+              thumbImg={video.strTrackThumb}
+              videoTrack={video.strTrack}
+              videoLink={video.strMusicVid}
+            />
+          );
+        }
+      );
+    }
 
     return (
       <div className="App text-light min-vh-100">
@@ -193,9 +205,7 @@ class App extends React.Component {
                     More of their videos
                   </h3>
                 </div>
-                <div className="row justify-content-center">
-                  {artistVideosCollection}
-                </div>
+                <div className="row">{artistVideosCollection}</div>
               </div>
             </div>
           ) : (
@@ -205,11 +215,10 @@ class App extends React.Component {
                 tracks and videos!
               </p>
               <div className="warning-text">
-                <h4 className="text-uppercase">Please be aware:</h4>
                 <p>
-                  Some artists are missing from the database as this app
-                  utilizes an external API. Please consider searching for
-                  another artist if the app throws an error.
+                  Please be aware that this app utilizes an external API and
+                  some artist data may be incomplete (for example, broken video
+                  links).
                 </p>
               </div>
             </div>
