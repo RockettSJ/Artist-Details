@@ -3,6 +3,7 @@ import ArtistCard from "./components/ArtistCard/ArtistCard";
 import ArtistPopularTrack from "./components/PopularTracks/ArtistPopularTracks";
 import ArtistVideo from "./components/ArtistVideo/ArtistVideo";
 import "./App.css";
+import "./images/Spinner-1s-324px.svg";
 
 class App extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class App extends React.Component {
       value: "",
       artistPopularTracks: [],
       artistVideosCollection: [],
+      loading: false,
       renderComponent: false,
     };
   }
@@ -36,6 +38,10 @@ class App extends React.Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
+
+    //Used to display loader animation while API data is being fetched
+    this.setState({ loading: true });
+
     //Initialize API call endpoints
     const artist = this.state.value;
     const api1 = "https://www.theaudiodb.com/api/v1/json/";
@@ -53,6 +59,8 @@ class App extends React.Component {
 
     // If the artist is found upon submission, start the procedure of fetching all data from each API call
     if (artistData.artists) {
+      this.setState({ loading: false });
+
       const bioExcerpt = this.bio_truncate(
         artistData.artists[0].strBiographyEN
       );
@@ -81,6 +89,9 @@ class App extends React.Component {
         this.setState({
           artistPopularTracks: popularTrackData.track,
         });
+      } else {
+        // Set it to null so that any previous state from other searches are not persistent
+        this.setState({ artistPopularTracks: null });
       }
 
       //Setup call to fetch the artist's videos
@@ -96,9 +107,12 @@ class App extends React.Component {
         this.setState({ artistVideosCollection: artistVideosLimited });
       } else {
         artistVideosLimited = null;
+        // Set it to null so that any previous state from other searches are not persistent
+        this.setState({ artistVideosCollection: null });
       }
     } else {
       alert("There was an error with your form input. Please try again.");
+      this.setState({ loading: false });
     }
   };
 
@@ -160,7 +174,15 @@ class App extends React.Component {
               </button>
             </div>
           </form>
-          {this.state.renderComponent ? (
+          {this.state.loading ? (
+            <div className="row justify-content-center">
+              <img
+                className="img"
+                src={require("./images/Spinner-1s-324px.svg")}
+                alt="Video thumbnail"
+              />
+            </div>
+          ) : this.state.renderComponent ? (
             <div className="row mt-3">
               <div className="col-lg-6 col-md-12 mb-md-3">
                 <ArtistCard
