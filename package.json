@@ -19,6 +19,7 @@
     "react-transition-group": "^4.4.1"
   },
   "scripts": {
+    "heroku buildpacks": "set mars/create-react-app",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
